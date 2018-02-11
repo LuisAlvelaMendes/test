@@ -51,7 +51,6 @@ public class randomPrinter {
 		Random randomnumber = new Random(); //object of type Random
 		int rand;
 		int[] a = new int[6];
-		int j = 0;
 		
 		// Getting the value of N for step 4
 		
@@ -83,7 +82,7 @@ public class randomPrinter {
 
 while(true) {
 	
-	for(int z = 0; z < N; z++) {
+for(int z = 0; z < N; z++) {
 	while(true) {
 		
 		for(int i = 0; i<=5; i++) {
@@ -107,9 +106,12 @@ while(true) {
 			//before adding to the matrix, sort it out.
 			Arrays.sort(a);
 			
+			/*
 			for(int k = 0; k < 6; k++) {
 				matrix[z][k] = a[k];
-			}
+			}*/
+			
+			matrix[z] = a.clone();
 			
 			break; //if it returns true, it's a valid key. If it returns false, generate another one, cycle loops back.
 		}
@@ -122,8 +124,8 @@ while(true) {
 }
 		
 	for(int i = 0; i<N; i++) {
-		for(int v = 0; v<6; v++) {
-			System.out.println(matrix[i][v]);
+		for(int j = 0; j<6; j++) {
+			System.out.println(matrix[i][j]);
 		}
 		
 		System.out.println(" ");
