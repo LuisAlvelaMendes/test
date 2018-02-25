@@ -44,59 +44,47 @@ public class randomPrinter {
 		return true;
 	}
 
-	public static void main(String[] args) {
+	public static int[][] generatelogic(int number, Bet bet) {
 		
-		//1. Generate 6 random numbers between 1 and 49 and print them.
+		//1. Generate random numbers between 1 and 49 and print them.
 		
 		Random randomnumber = new Random(); //object of type Random
 		int rand;
-		int[] a = new int[6];
+		int N = 0;
 		
-		// Getting the value of N for step 4
+		//Bet can be either simple or multiple
+		//In case it's simple, N becomes the amount of bets to generate like before.
+		//If it is multiple, N becomes 1 (only one bet) but the inner for cycle will have bet.size()
 		
-		int N;
-		
-		Scanner keyboard = new Scanner(System.in);
-		
-		try {
-		
-		System.out.print("Valor de N: ");
-		
-		N = keyboard.nextInt();
-		
+		if(bet.getType() == "Simple") {
+			//amount of bets to generate
+			N = number;
 		}
 		
-		catch(InputMismatchException exception) {
-			System.out.print("The value you typed in for N is not an integer.");
-			return;
+		if(bet.getType() == "Multiple") {
+			N = 1;
 		}
 		
-		if(N < 0) {
-			System.out.print("The value you typed in for N is negative, it must be positive.");
-			return;
-		}
-		
-		int[][] matrix = new int[N][6];
-		
-		System.out.println("Não pode repetir: ");
+		//matrix that holds bets
+		int[][] matrix = new int[N][bet.getSize()];
 
 while(true) {
 	
 for(int z = 0; z < N; z++) {
 	while(true) {
 		
-		for(int i = 0; i<=5; i++) {
+		for(int i = 0; i<=bet.getSize(); i++) {
 			rand = randomnumber.nextInt(49);
 			
 			//you don't want 0 though if it's 0, it's actually 1, also saving into array for later.
 			if(rand == 0) {
-				a[i] = rand + 1;
+				bet.setNumber(rand + 1, i);
 			} else {
-				a[i] = rand; 
+				bet.setNumber(rand, i); 
 			}
 		}
 		
-		if(checkunique(a)) {
+		if(checkunique(bet.getNumbers())) {
 			
 			//if it's valid key, add to matrix
 			
@@ -104,14 +92,9 @@ for(int z = 0; z < N; z++) {
 			//the matrix initially starts with N keys all set to 000000.
 			
 			//before adding to the matrix, sort it out.
-			Arrays.sort(a);
+			bet.sortNumbers();
 			
-			/*
-			for(int k = 0; k < 6; k++) {
-				matrix[z][k] = a[k];
-			}*/
-			
-			matrix[z] = a.clone();
+			matrix[z] = bet.getNumbers().clone();
 			
 			break; //if it returns true, it's a valid key. If it returns false, generate another one, cycle loops back.
 		}
@@ -122,14 +105,7 @@ for(int z = 0; z < N; z++) {
 		break;
 	}
 }
-		
-	for(int i = 0; i<N; i++) {
-		for(int j = 0; j<6; j++) {
-			System.out.println(matrix[i][j]);
-		}
-		
-		System.out.println(" ");
-	}
+	return matrix;
 	
 	}
 }
