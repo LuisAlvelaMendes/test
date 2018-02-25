@@ -4,7 +4,7 @@ import java.util.Arrays;
 
 public class Bet {
 	private int size;
-	private int numbers[];
+	private int numbers[] = new int[49];
 	private String type;
 
 	public Bet(int sizearray, String bettype) {
@@ -29,5 +29,5 @@ public class Bet {
 	
 	public int getSize() {return size;};
 	
-	public void sortNumbers() {Arrays.sort(numbers);};
+	//public void sortNumbers() {Arrays.sort(numbers);};
 }

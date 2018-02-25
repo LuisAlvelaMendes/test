@@ -1,5 +1,6 @@
 package generator;
 
+import java.lang.reflect.Array;
 import java.util.Arrays;
 import java.util.InputMismatchException;
 import java.util.Random;
@@ -26,14 +27,14 @@ public class randomPrinter {
 		return true;
 	}
 	
-	public static boolean checkunique(int[] key) {
+	public static boolean checkunique(int[] key, int size) {
 		int temp;
 		
-		for(int c = 0; c < key.length; c++) {
+		for(int c = 0; c < size; c++) {
 			
 			temp = key[c];
 			
-			for(int d = 0; d < key.length; d++) {
+			for(int d = 0; d < size; d++) {
 				if(temp == key[d] && d != c) {
 					//this means a repeated number was found in the key, so, we're going to have to generate a new one until this does not happen..
 					return false;
@@ -51,30 +52,32 @@ public class randomPrinter {
 		Random randomnumber = new Random(); //object of type Random
 		int rand;
 		int N = 0;
+		String simple = "Simple";
+		String multiple = "Multiple";
 		
 		//Bet can be either simple or multiple
 		//In case it's simple, N becomes the amount of bets to generate like before.
 		//If it is multiple, N becomes 1 (only one bet) but the inner for cycle will have bet.size()
 		
-		if(bet.getType() == "Simple") {
+		if(bet.getType().equals(simple)) {
 			//amount of bets to generate
 			N = number;
 		}
 		
-		if(bet.getType() == "Multiple") {
+		if(bet.getType().equals(multiple)) {
 			N = 1;
 		}
 		
 		//matrix that holds bets
-		int[][] matrix = new int[N][bet.getSize()];
+		int[][] matrix = new int[N+1][bet.getSize()+1];
 
 while(true) {
 	
 for(int z = 0; z < N; z++) {
 	while(true) {
 		
-		for(int i = 0; i<=bet.getSize(); i++) {
-			rand = randomnumber.nextInt(49);
+		for(int i = 0; i<bet.getSize(); i++) {
+			rand = randomnumber.nextInt(50);
 			
 			//you don't want 0 though if it's 0, it's actually 1, also saving into array for later.
 			if(rand == 0) {
@@ -84,7 +87,7 @@ for(int z = 0; z < N; z++) {
 			}
 		}
 		
-		if(checkunique(bet.getNumbers())) {
+		if(checkunique(bet.getNumbers(), bet.getSize())) {
 			
 			//if it's valid key, add to matrix
 			
@@ -92,7 +95,8 @@ for(int z = 0; z < N; z++) {
 			//the matrix initially starts with N keys all set to 000000.
 			
 			//before adding to the matrix, sort it out.
-			bet.sortNumbers();
+			
+			//bet.sortNumbers();
 			
 			matrix[z] = bet.getNumbers().clone();
 			
@@ -105,6 +109,23 @@ for(int z = 0; z < N; z++) {
 		break;
 	}
 }
+
+	//now we have to generate the extra lucky number from 1 to 13
+	int luckynumber = 0;
+	
+	rand = randomnumber.nextInt(14);
+	
+	//you don't want 0 though if it's 0, it's actually 1, also saving into array for later.
+	if(rand == 0) {
+		luckynumber = 1;
+	} else {
+		luckynumber = rand;
+	}
+	
+	//we will place this number at the end of matrix
+	
+	matrix[N][bet.getSize()] = luckynumber;
+
 	return matrix;
 	
 	}
